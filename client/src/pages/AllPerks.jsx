@@ -30,6 +30,16 @@ export default function AllPerks() {
 
 */
 
+  // Hook #1: Initial Data Loading on component mount
+  useEffect(() => {
+    loadAllPerks()
+  }, []) // Empty dependency array: runs only once on mount
+
+  // Hook #2: Auto-search when search query or merchant filter changes
+  useEffect(() => {
+    loadAllPerks()
+  }, [searchQuery, merchantFilter]) // Re-run whenever these change
+
   
   useEffect(() => {
     // Extract all merchant names from perks array
@@ -136,7 +146,8 @@ export default function AllPerks() {
                 type="text"
                 className="input"
                 placeholder="Enter perk name..."
-                
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <p className="text-xs text-zinc-500 mt-1">
                 Auto-searches as you type, or press Enter / click Search
@@ -151,7 +162,8 @@ export default function AllPerks() {
               </label>
               <select
                 className="input"
-                
+                value={merchantFilter}
+                onChange={(e) => setMerchantFilter(e.target.value)}
               >
                 <option value="">All Merchants</option>
                 
@@ -217,7 +229,7 @@ export default function AllPerks() {
           
           <Link
             key={perk._id}
-           
+            to={`/perks/${perk._id}`}
             className="card hover:shadow-lg transition-shadow cursor-pointer"
           >
             {/* Perk Title */}
